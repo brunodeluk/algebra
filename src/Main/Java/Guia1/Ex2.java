@@ -101,13 +101,12 @@ public class Ex2 {
     public static int mcd(int a, int b){
         if(b == 0) return a;
         int remainder;
-        for (int i = 0; i <= b; i--) {
+        while(true) {
             remainder = a%b;
             a = b;
             b = remainder;
             if(remainder == 0) return a;
         }
-        return 1;
     }
 
     /**
