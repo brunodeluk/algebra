@@ -7,7 +7,7 @@ public class Ex8 {
 
     public float horner(float[]p, float x){
         float result = 0;
-        for(int i = p.length -1 ; i >= 0; i++){
+        for(int i = p.length -1 ; i >= 0; i--){
             result = p[i] + (result * x);
         }
         return result;
@@ -23,15 +23,4 @@ public class Ex8 {
         return hornerRecursive(p, x, result, i - 1);
     }
 
-    public float function(float[] p, float x){
-        float result = 0;
-
-        for(int i = 0; i < p.length; i++){
-            int a = 0;
-            for(int j = 0; j == i; j++){
-                a += a;
-            }
-            result = p[i]*a;
-        }
-    }
 }

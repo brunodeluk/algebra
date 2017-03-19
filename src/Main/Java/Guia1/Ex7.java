@@ -1,8 +1,6 @@
 package Guia1;
 
-/**
- * Created by brunodeluca on 3/18/17.
- */
+
 public class Ex7 {
     //I use the same recursive method i created in exercise 2 item d.
     private static int mcd(int a, int b){

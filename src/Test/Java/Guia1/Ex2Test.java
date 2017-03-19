@@ -4,9 +4,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by brunodeluca on 3/18/17.
- */
 public class Ex2Test {
     @Test
     public void factorial() throws Exception {
