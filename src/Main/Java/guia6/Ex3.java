@@ -4,9 +4,10 @@ package guia6;
  * Created by nicurat on 5/15/17.
  */
 public class Ex3 implements Exercise3 {
+
     @Override
-    public double[][] exerciseAI(double[][] matrixA, double[] vectorX, Calculator calculator) {
-        return new double[0][];
+    public double[] exerciseAI(double[][] matrixA, double[] vectorX, Calculator calculator) {
+        return new double[0];
     }
 
     @Override
@@ -20,8 +21,8 @@ public class Ex3 implements Exercise3 {
     }
 
     @Override
-    public double[][] exerciseBI(double[][] matrixA, double[] vectorX, Calculator calculator) {
-        return new double[0][];
+    public double[] exerciseBI(double[][] matrixA, double[] vectorX, Calculator calculator) {
+        return new double[0];
     }
 
     @Override
@@ -35,8 +36,8 @@ public class Ex3 implements Exercise3 {
     }
 
     @Override
-    public double[][] exerciseCI(double[][] matrixA, double[] vectorX, Calculator calculator) {
-        return new double[0][];
+    public double[] exerciseCI(double[][] matrixA, double[] vectorX, Calculator calculator) {
+        return new double[0];
     }
 
     @Override
@@ -50,8 +51,8 @@ public class Ex3 implements Exercise3 {
     }
 
     @Override
-    public double[][] exerciseDI(double[][] matrixA, int k1A, int k2A, double[] vectorX, Calculator calculator) {
-        return new double[0][];
+    public double[] exerciseDI(double[][] matrixA, int k1A, int k2A, double[] vectorX, Calculator calculator) {
+        return new double[0];
     }
 
     @Override
