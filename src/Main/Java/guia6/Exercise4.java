@@ -1,6 +1,7 @@
 package guia6;
 
 public interface Exercise4{
+
+	double[][] summation(double[] matrixA, double[] matrixB, Calculator calculator);
 	
-	public Node[] summation(Node[] matrixA, Node[] matrixB, Calculator calculator);
 }
