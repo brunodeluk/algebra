@@ -1,10 +1,18 @@
 package guia6;
 
 /**
- * Created by nicurat on 5/15/17.
+ * Esta clase prove un algoritmo para realizar la suma de dos matrices superiores.
+ * @author Nicolas Curat, Bruno De Luca
  */
 public class Ex4 implements Exercise4 {
 
+    /**
+     * Metodo para realizar la suma de dos matrices superiores ahorrando memoria y operaciones.
+     * @param matrixA matrizA a sumar
+     * @param matrixB matrizB a sumar
+     * @param calculator calculadora para resolver operaciones
+     * @return matriz suma entre dos matrices
+     */
     @Override
     public double[][] summation(double[] matrixA, double[] matrixB, Calculator calculator) {
         if(matrixA.length == matrixB.length){
