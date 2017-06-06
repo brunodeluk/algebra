@@ -19,7 +19,7 @@ public class Ex3Test {
 
         Ex3 ex3 = new Ex3();
 
-        double[][] x = ex3.exerciseAI(b, a, new Calculator() {
+        double[] x = ex3.exerciseAI(b, a, new Calculator() {
             @Override
             public double sum(double a, double b) {
                 return 0;
