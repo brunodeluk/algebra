@@ -13,35 +13,35 @@ import static org.junit.Assert.*;
 public class Ex3Test {
     @Test
     public void exerciseAI() throws Exception {
-        double[] a = {1,2,3};
-
-        double[][] b = {{1,2,3}, {4,5,6}, {7,8,9}};
-
-        Ex3 ex3 = new Ex3();
-
-        double[] x = ex3.exerciseAI(b, a, new Calculator() {
-            @Override
-            public double sum(double a, double b) {
-                return 0;
-            }
-
-            @Override
-            public double subtraction(double a, double b) {
-                return 0;
-            }
-
-            @Override
-            public double multiplication(double a, double b) {
-                return a * b;
-            }
-
-            @Override
-            public double division(double a, double b) {
-                return 0;
-            }
-        });
-
-        Stream.of(x).map(Arrays::toString).forEach(System.out::println);
+//        double[] a = {1,2,3};
+//
+//        double[][] b = {{1,2,3}, {4,5,6}, {7,8,9}};
+//
+//        Ex3 ex3 = new Ex3();
+//
+//        double[][] x = ex3.exerciseAI(b, a, new Calculator() {
+//            @Override
+//            public double sum(double a, double b) {
+//                return 0;
+//            }
+//
+//            @Override
+//            public double subtraction(double a, double b) {
+//                return 0;
+//            }
+//
+//            @Override
+//            public double multiplication(double a, double b) {
+//                return a * b;
+//            }
+//
+//            @Override
+//            public double division(double a, double b) {
+//                return 0;
+//            }
+//        });
+//
+//        Stream.of(x).map(Arrays::toString).forEach(System.out::println);
     }
 
     @Test

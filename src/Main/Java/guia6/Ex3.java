@@ -1,5 +1,7 @@
 package guia6;
 
+import java.util.Arrays;
+
 /**
  * Esta clase prove metodos para la manipulacion de matrices especiales
  * @author Nicolas Curat, Bruno De Luca
@@ -33,6 +35,54 @@ public class Ex3 implements Exercise3 {
 
     }
 
+    private double[] aI(double[][] matrixA, double[] vectorX, Calculator calculator){
+        if(matrixA[0].length != vectorX.length) throw new IllegalArgumentException("Nope");
+        double[] result = new double[vectorX.length];
+        for (int i = 0; i < matrixA.length; i++) {
+            for (int j = i; j < vectorX.length; j++) {
+                result[i] = calculator.sum(result[i], calculator.multiplication(matrixA[i][j], vectorX[j]));
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Ex3 ex3 = new Ex3();
+        double[][] matrixA = {{1.0, 3.0, 1.0}, {0.0, 2.0, 1.0}, {0.0, 0.0, 2.0}};
+        double[][] matrixB = {{1.0, 3.0, 2.0}, {0.0, 4.0, 1.0}, {0.0, 0.0, 1.0}};
+        double[] vector = {1.0, 2.0, 1.0};
+        Calc calc = new Calc();
+        double[][] aII = ex3.aII(matrixA, matrixB, calc);
+        double[] aI = ex3.aI(matrixA, vector, calc);
+        double[][] aIII = ex3.aIII(matrixA, matrixB, calc);
+        System.out.println(Arrays.deepToString(aII));
+        System.out.println(Arrays.toString(aI));
+        System.out.println(Arrays.deepToString(aIII));
+    }
+    
+    private static class Calc implements Calculator{
+
+        @Override
+        public double sum(double a, double b) {
+            return a + b;
+        }
+
+        @Override
+        public double subtraction(double a, double b) {
+            return a-b;
+        }
+
+        @Override
+        public double multiplication(double a, double b) {
+            return a*b;
+        }
+
+        @Override
+        public double division(double a, double b) {
+            return a/b;
+        }
+    }
+
     /**
      * Metodo para realizar la suma de dos matrices triangulares superiores (n*n)
      * @param matrixA matrizA
@@ -57,6 +107,16 @@ public class Ex3 implements Exercise3 {
             }
         }
         return c;
+    }
+
+    private double[][] aII(double[][] matrixA, double[][] matrixB, Calculator calculator){
+        double[][] result = new double[matrixA.length][matrixA[0].length];
+        for (int i = 0; i < matrixA.length; i++) {
+            for (int j = i; j < matrixA.length; j++) {
+                result[i][j] = calculator.sum(result[i][j], calculator.sum(matrixA[i][j], matrixB[i][j]));
+            }
+        }
+        return result;
     }
 
     /**
@@ -87,6 +147,22 @@ public class Ex3 implements Exercise3 {
         return c;
     }
 
+    private double[][] aIII(double[][] matrixA, double[][] matrixB, Calculator calculator){
+        double[][] result = new double[matrixA.length][matrixB[0].length];
+        for (int i = 0; i < matrixA.length; i++) {
+            for (int j = 0; j < matrixB[0].length; j++) {
+                int indexColumn = i;
+                int k = i; // Start in matrixA
+                int n = 0; // Start in matrixB
+                while(k < matrixA[0].length && n < j + 1) {
+                    result[i][indexColumn] = calculator.sum(result[i][indexColumn], calculator.multiplication(matrixA[i][k], matrixB[n][j]));
+                    k++;
+                    n++;
+                }
+            }
+        }
+        return result;
+    }
     /**
      * Metodo para realizar la multiplicacion de una matriz de Hessenberg (n*n) y un vector(n)
      * @param matrixA matrizA
