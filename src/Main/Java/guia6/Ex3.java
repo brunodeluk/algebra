@@ -151,11 +151,10 @@ public class Ex3 implements Exercise3 {
         double[][] result = new double[matrixA.length][matrixB[0].length];
         for (int i = 0; i < matrixA.length; i++) {
             for (int j = 0; j < matrixB[0].length; j++) {
-                int indexColumn = i;
                 int k = i; // Start in matrixA
                 int n = 0; // Start in matrixB
                 while(k < matrixA[0].length && n < j + 1) {
-                    result[i][indexColumn] = calculator.sum(result[i][indexColumn], calculator.multiplication(matrixA[i][k], matrixB[n][j]));
+                    result[i][i] = calculator.sum(result[i][i], calculator.multiplication(matrixA[i][k], matrixB[n][j]));
                     k++;
                     n++;
                 }
