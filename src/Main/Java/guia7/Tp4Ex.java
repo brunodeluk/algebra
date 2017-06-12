@@ -43,29 +43,17 @@ public class Tp4Ex implements TP4 {
     @Override
     public double[] exercise5WithoutPivoteo(double[][] coefficients, double[] independentTerms) {
         double[] result;
-        int count = 0;
         //Descendant Part.
         for (int i = 0; i < coefficients.length; i++) {
             double pivot = coefficients[i][i];
             for (int j = 0; j < coefficients.length; j++) {
                 coefficients[i][j] = coefficients[i][j]/pivot; //Me asegura que la diagonal sea 1.
-                count++;
             }
             independentTerms[i] = independentTerms[i]/pivot;
-            count++;
-            for (int j = i + 1; j < coefficients.length; j++) {
-                double value = coefficients[j][i];
-                for (int k = i; k < coefficients.length; k++) {
-                    coefficients[j][k] = coefficients[j][k] - (coefficients[i][k]*value);
-                    count++;
-                }
-                independentTerms[j] = independentTerms[j] - (independentTerms[i]*value);
-                count++;
-            }
+            changesToMatrix(coefficients, independentTerms, i);
         }
         //Ascendant Part.
         result = exercise1(coefficients, independentTerms);
-        System.out.println("Cantidad de operaciones WP: " + count);
         return result;
     }
 
@@ -95,17 +83,21 @@ public class Tp4Ex implements TP4 {
                 coefficients[i][j] = coefficients[i][j]/pivot; //Me asegura que la diagonal sea 1.
             }
             independentTerms[i] = independentTerms[i]/pivot;
-            for (int j = i + 1; j < coefficients.length; j++) { //j sera las nuevas filas
-                double value = coefficients[j][i];
-                for (int k = i; k < coefficients.length; k++) { //k va a determinar las columnas
-                    coefficients[j][k] = coefficients[j][k] - (coefficients[i][k]*value);
-                }
-                independentTerms[j] = independentTerms[j] - (independentTerms[i]*value);
-            }
+            changesToMatrix(coefficients, independentTerms, i);
         }
         //Ascendant Part.
         result = exercise1(coefficients, independentTerms);
         return result;
+    }
+
+    private void changesToMatrix(double[][] coefficients, double[] independentTerms,int i){
+        for (int j = i + 1; j < coefficients.length; j++) { //j sera las nuevas filas
+            double value = coefficients[j][i];
+            for (int k = i; k < coefficients.length; k++) { //k va a determinar las columnas
+                coefficients[j][k] = coefficients[j][k] - (coefficients[i][k]*value);
+            }
+            independentTerms[j] = independentTerms[j] - (independentTerms[i]*value);
+        }
     }
 
     private double[][] searchMax(double[][] coefficients, int k){
@@ -122,40 +114,32 @@ public class Tp4Ex implements TP4 {
     @Override
     public double[] exercise6(double[][] coefficients, double[] independentTerms, Calculator calculator) {
         double[] result;
-        int count = 0;
         //Descendant Part.
         for (int i = 0; i < coefficients.length; i++) {
             double pivot = coefficients[i][i];
             double value = 0;
             if(i+1 != coefficients.length) { //Guardo el valor de la fila de abajo en la posicion 0
                 value = coefficients[i+1][i];
-                count++;
             }
             for (int j = 0; j < coefficients.length; j++) {
                 coefficients[i][j] = coefficients[i][j]/pivot; //Me asegura que la diagonal sea 1.
-                count++;
                 if(i+1 != coefficients.length && j >= i){ //Me asegura que no me este metiendo en 0 que yase por Hessemberg que estan en la matriz
                     coefficients[i+1][j] = coefficients[i+1][j] - (coefficients[i][j]*value);
-                    count++;
                 }
             }
             independentTerms[i] = independentTerms[i]/pivot;
-            count++;
             if(i+1 != coefficients.length){
                 independentTerms[i+1] = independentTerms[i+1] - (independentTerms[i] * value);
-                count++;
             }
         }
         //Ascendant Part.
         result = exercise1(coefficients, independentTerms);
-        System.out.println("Cantidad de operaciones Hessemberg: " + count);
         return result;
     }
 
     @Override
     public double[] exercise7(double[][] coefficients, double[] independentTerms, Calculator calculator) {
         double[] result;
-        int count = 0;
         //Descendant Part.
         for (int i = 0; i < coefficients.length; i++) {
             double pivot = coefficients[i][i];
@@ -166,23 +150,18 @@ public class Tp4Ex implements TP4 {
             for (int j = 0; j < coefficients.length; j++) {
                 if(j+2 != coefficients.length && j < i+2) { //Se fija que no haga cambios a 0 que yase que estan por ser matriz tridiagonal
                     coefficients[i][j] = coefficients[i][j] / pivot; //Me asegura que la diagonal sea 1.
-                    count++;
                 }
                 if(i+1 != coefficients.length && j >= i){ //Me asegura que no me este metiendo en 0 que yase que estan en la matriz tridiagonal
                     coefficients[i+1][j] = coefficients[i+1][j] - (coefficients[i][j]*value);
-                    count++;
                 }
             }
             independentTerms[i] = independentTerms[i]/pivot;
-            count++;
             if(i+1 != coefficients.length){
                 independentTerms[i+1] = independentTerms[i+1] - (independentTerms[i] * value);
-                count++;
             }
         }
         //Ascendant Part.
         result = exercise1(coefficients, independentTerms);
-        System.out.println("Cantidad de operaciones hechas en matriz tridiagonal: " + count);
         return result;
     }
 
