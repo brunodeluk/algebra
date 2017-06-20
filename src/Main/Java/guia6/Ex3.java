@@ -251,6 +251,6 @@ public class Ex3 implements Exercise3 {
 
     @Override
     public double[][] exerciseE(double[][] matrixA, double[][] matrixB, Calculator calculator) {
-
+        return null;
     }
 }
