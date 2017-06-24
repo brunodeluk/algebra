@@ -1,10 +1,5 @@
 package guia7;
 
-import guia6.Ex1;
-import guia6.Ex3;
-
-import java.util.Arrays;
-
 public class Tp4Ex implements TP4 {
 
     @Override
@@ -42,74 +37,85 @@ public class Tp4Ex implements TP4 {
 
     @Override
     public double[] exercise5WithoutPivoteo(double[][] coefficients, double[] independentTerms) {
-        double[] result;
-        //Descendant Part.
-        for (int i = 0; i < coefficients.length; i++) {
-            double pivot = coefficients[i][i];
-            for (int j = 0; j < coefficients.length; j++) {
-                coefficients[i][j] = coefficients[i][j]/pivot; //Me asegura que la diagonal sea 1.
+        int row = coefficients.length;
+        int col = coefficients[0].length;
+        int indTermsLenght = independentTerms.length;
+
+        if(row != col) throw new IllegalArgumentException();
+        if(col != indTermsLenght) throw new IllegalArgumentException();
+
+        for(int i = 0; i < col - 1; i++){
+            normalize(coefficients, independentTerms, i);
+            for(int j = i + 1; j < row; j++){
+                double pivot = coefficients[j][i];
+                for(int k = 0; k < col; k++){
+                    coefficients[j][k] = coefficients[i][k]*pivot - coefficients[j][k];
+                }
+                independentTerms[j] = independentTerms[i]*pivot - independentTerms[j];
             }
-            independentTerms[i] = independentTerms[i]/pivot;
-            changesToMatrix(coefficients, independentTerms, i);
         }
-        //Ascendant Part.
-        result = exercise1(coefficients, independentTerms);
-        return result;
+
+        normalize(coefficients, independentTerms, col - 1);
+
+        return exercise1(coefficients, independentTerms);
     }
 
-    public static void main(String[] args) {
-        Tp4Ex ex = new Tp4Ex();
-        double[][] matrixA = {{1.0, 4.0, 0.0}, {3.0, 4.0, 1.0}, {0.0, 2.0, 3.0}};
-        double[] vector = {6.0, 1.0, 1.0};
-        double[] resultH = ex.exercise6(matrixA, vector, new Calc());
-        double[] resultWP = ex.exercise5WithoutPivoteo(matrixA, vector);
-        double[] resultMT = ex.exercise7(matrixA, vector, new Calc());
-        System.out.println("Resultado de WP: ");
-        System.out.println(Arrays.toString(resultMT));
-        System.out.println("Resultado de H: ");
-        System.out.println(Arrays.toString(resultH));
-        System.out.println("Resultado de WP: ");
-        System.out.println(Arrays.toString(resultWP));
-    }
+
 
     @Override
     public double[] exercise5PartialPivoteo(double[][] coefficients, double[] independentTerms) {
-        double[] result;
-        //Descendant Part.
-        for (int i = 0; i < coefficients.length; i++) {
-            double pivot = coefficients[i][i];
-            coefficients = searchMax(coefficients, i);
-            for (int j = 0; j < coefficients.length; j++) {
-                coefficients[i][j] = coefficients[i][j]/pivot; //Me asegura que la diagonal sea 1.
-            }
-            independentTerms[i] = independentTerms[i]/pivot;
-            changesToMatrix(coefficients, independentTerms, i);
-        }
-        //Ascendant Part.
-        result = exercise1(coefficients, independentTerms);
-        return result;
-    }
+        int row = coefficients.length;
+        int col = coefficients[0].length;
+        int indTermsLenght = independentTerms.length;
 
-    private void changesToMatrix(double[][] coefficients, double[] independentTerms,int i){
-        for (int j = i + 1; j < coefficients.length; j++) { //j sera las nuevas filas
-            double value = coefficients[j][i];
-            for (int k = i; k < coefficients.length; k++) { //k va a determinar las columnas
-                coefficients[j][k] = coefficients[j][k] - (coefficients[i][k]*value);
-            }
-            independentTerms[j] = independentTerms[j] - (independentTerms[i]*value);
-        }
-    }
+        if(row != col) throw new IllegalArgumentException();
+        if(col != indTermsLenght) throw new IllegalArgumentException();
 
-    private double[][] searchMax(double[][] coefficients, int k){
-        for (int i = k; i < coefficients.length-1; i++) {
-            if(coefficients[i][k] < coefficients[i + 1][k]) {
-                for (int j = 0; j < coefficients.length; j++) {
-                    coefficients[i][j] = coefficients[i + 1][j];
+        for(int i = 0; i < col - 1; i++){
+            switchRows(coefficients, independentTerms, i);
+            normalize(coefficients, independentTerms, i);
+            for(int j = i + 1; j < row; j++){
+                double pivot = coefficients[j][i];
+                for(int k = 0; k < col; k++){
+                    coefficients[j][k] = coefficients[i][k]*pivot - coefficients[j][k];
                 }
+                independentTerms[j] = independentTerms[i]*pivot - independentTerms[j];
             }
         }
-        return coefficients;
+
+        normalize(coefficients, independentTerms, col - 1);
+
+        return exercise1(coefficients, independentTerms);
+
     }
+
+    private void normalize(double[][] matrix, double[] terms, int position){
+        double pivote = matrix[position][position];
+        for(int i = position; i < matrix[0].length; i++) matrix[position][i] /= pivote;
+        terms[position] /= pivote;
+    }
+
+    private void switchRows(double[][] coefficients, double[] independentTerms, int position){
+
+        double k = coefficients[position][position];
+        int posK = position;
+
+        for(int i = position + 1; i < coefficients.length; i++){
+            if(coefficients[i][position] > k) posK = i;
+        }
+
+        for(int i = position; i < coefficients[0].length; i++){
+            double aux = coefficients[position][i];
+            coefficients[position][i] = coefficients[posK][i];
+            coefficients[posK][i] = aux;
+        }
+
+        double aux2 = independentTerms[position];
+        independentTerms[position] = independentTerms[posK];
+        independentTerms[posK] = aux2;
+    }
+
+
 
     @Override
     public double[] exercise6(double[][] coefficients, double[] independentTerms, Calculator calculator) {
@@ -167,33 +173,114 @@ public class Tp4Ex implements TP4 {
 
     @Override
     public double[][] exercise8(double[][] coefficients) {
-        return new double[0][];
+        int row = coefficients.length;
+        int col = coefficients[0].length;
+
+        double[][] identity = new double[row][col];
+
+        for(int i = 0; i < col; i++) identity[i][i] = 1;
+
+        //triangular superiormente
+
+        for(int i = 0; i < col - 1; i++){
+            for(int j = i + 1; j < row; j++){
+                double pivotA = coefficients[i][i];
+                double pivot = coefficients[j][i];
+                for(int k = 0; k < col; k++){
+                    coefficients[j][k] = coefficients[j][k] - (coefficients[i][k]*pivot) / pivotA;
+                    identity[j][k] = identity[j][k] - (identity[i][k]*pivot) / pivotA;
+                }
+            }
+        }
+
+        //triangular inferiormente
+
+        for(int i = col - 1; i > 0; i--){
+            for(int j = i - 1; j >= 0; j--){
+                double pivotA = coefficients[i][i];
+                double pivot = coefficients[j][i];
+                for(int k = 0; k < col; k++){
+                    coefficients[j][k] = coefficients[j][k] - (coefficients[i][k]*pivot) / pivotA;
+                    identity[j][k] = identity[j][k] - (identity[i][k]*pivot) / pivotA;
+                }
+            }
+        }
+
+        //normalizar identidad
+
+        normalize(identity, coefficients);
+
+        return identity;
+     }
+
+    public void normalize(double[][] identity, double[][] coefficients){
+        for(int i = 0; i < identity.length; i++){
+            for(int j = 0; j < identity[0].length; j++){
+                identity[i][j] /= coefficients[i][i];
+            }
+        }
     }
+
 
     @Override
     public double[] exercise9(double[][] coefficients, double[] independentTerms) {
-        return new double[0];
+
+        double[][] l = new double[coefficients.length][coefficients.length];
+        double[][] u = new double[coefficients.length][coefficients.length];
+
+        for (int i = 0; i < l.length; i++) {
+            l[i][i] = 1;
+        }
+
+        for (int k = 0; k < coefficients.length; k++) {
+            for (int j = k; j < coefficients.length; j++) {
+                u[k][j] = coefficients[k][j];
+                double sum = 0;
+                for (int p = 0; p < k; p++) {
+                    sum += l[k][p]*u[p][j];
+                }
+                u[k][j] -= sum;
+            }
+
+            for (int i = 0; i < coefficients.length; i++) {
+                l[i][k] = coefficients[i][k];
+
+                double summation = 0;
+                for (int p = 0; p < k; p++) {
+                    summation += l[i][p]*u[p][k];
+                }
+                l[i][k] -= summation;
+                l[i][k] /= u[k][k];
+            }
+        }
+
+        double[] z = exercise2(l,independentTerms);
+        return solveUp(u, z);
     }
 
-    private static class Calc implements Calculator{
-        @Override
-        public double sum(double a, double b) {
-            return a + b;
-        }
+    private double[] solveUp(double[][] coefficients, double[] independentTerms) {
+        double[] result = new double[coefficients.length];
 
-        @Override
-        public double subtraction(double a, double b) {
-            return a - b;
+        for (int i = coefficients.length -1; i >= 0 ; i--) {
+            result[i] = independentTerms[i];
+            double summation = 0;
+            for (int j = i+1; j < coefficients.length; j++) {
+                summation += coefficients[i][j] * result[j];
+            }
+            result[i] -= summation;
+            result[i] /= coefficients[i][i];
         }
+        return result;
+    }
 
-        @Override
-        public double multiplication(double a, double b) {
-            return a * b;
-        }
+    public static void main(String[] args) {
+        Tp4Ex tp4Ex = new Tp4Ex();
+        double[][] d = {{2, 3}, {4, -7}};
+        double[] p = {-1, 11};
+        double[] r = tp4Ex.exercise5WithoutPivoteo(d, p);
 
-        @Override
-        public double division(double a, double b) {
-            return a/b;
+        for(int i = 0; i < r.length; i++){
+            System.out.println(r[i]);
         }
     }
 }

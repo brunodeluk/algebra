@@ -16,11 +16,7 @@ public class Ex1 implements Exercise1 {
     @Override
     public double exerciseA(double[][] matrix, Calculator calculator) {
         double sum = 0;
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                if(i == j) sum += calculator.sum(sum, matrix[i][j]);
-            }
-        }
+        for(int i = 0; i < matrix.length; i++) sum += matrix[i][i];
         return sum;
     }
 
@@ -33,11 +29,7 @@ public class Ex1 implements Exercise1 {
     @Override
     public double exerciseB(double[][] matrix, Calculator calculator) {
         double sum = 0;
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                if(i+j == matrix.length-1) sum += calculator.sum(sum, matrix[i][j]);
-            }
-        }
+        for(int i = 0; i < matrix[0].length; i++) sum+= matrix[i][matrix.length - 1 - i];
         return sum;
     }
 
@@ -73,18 +65,21 @@ public class Ex1 implements Exercise1 {
      */
     @Override
     public double[] exerciseD(double[][] matrix, double[] vector, Calculator calculator) {
-        if(matrix[0].length == vector.length){
-            double[] result = new double[vector.length];
-            for (int i = 0; i < matrix[0].length; i++) {
-                double aux = 0;
-                for (int j = 0; j < matrix.length; j++) {
-                    aux += calculator.sum(aux, calculator.multiplication(matrix[i][j], vector[j]));
-                }
-                result[i] = aux;
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int vectorLenght = vector.length;
+
+        if(col != vectorLenght) throw new IllegalArgumentException();
+
+        double[] result = new double[row];
+
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                result[i] += calculator.multiplication(matrix[i][j],vector[j]);
             }
-            return result;
         }
-        throw new RuntimeException("Length of columns in matrix and the length in vector must be the same!");
+
+        return result;
     }
 
     /**
@@ -146,5 +141,34 @@ public class Ex1 implements Exercise1 {
             }
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        Ex1 ex1 = new Ex1();
+        double[][] d = {{1, 2, 3}, {4, 5, 6}};
+        double[] p = {1, 2, 3};
+        double[] r = ex1.exerciseD(d, p, new Calculator() {
+            @Override
+            public double sum(double a, double b) {
+                return a + b;
+            }
+
+            @Override
+            public double subtraction(double a, double b) {
+                return 0;
+            }
+
+            @Override
+            public double multiplication(double a, double b) {
+                return a*b;
+            }
+
+            @Override
+            public double division(double a, double b) {
+                return 0;
+            }
+        });
+
+        for(int i = 0; i < r.length; i++) System.out.println(r[i]);
     }
 }
