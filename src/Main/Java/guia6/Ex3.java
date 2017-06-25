@@ -171,22 +171,18 @@ public class Ex3 implements Exercise3 {
      */
     @Override
     public double[] exerciseBI(double[][] matrixA, double[] vectorX, Calculator calculator) {
-        int aRow = matrixA.length;
-        int aColumn = matrixA[0].length;
-        int bRow = vectorX.length;
-
-        if(aColumn != bRow) throw new IllegalArgumentException("A:Rows: " + aRow + " don't match B:Columns " + aColumn + ".");
-
-        double[] c = new double[bRow];
-
-        for(int i = 0; i < aRow; i++){
-            for(int j = 0;j < i + 2 && j < aRow; j++){
-                if(matrixA[i][j] == 0) break;
-                c[0] += calculator.multiplication(matrixA[i][j], vectorX[j]);
+        if(matrixA.length == vectorX.length) {
+            double[] result = new double[vectorX.length];
+            for (int i = 0; i < matrixA.length; i++) {
+                for (int j = 0; j < matrixA.length; j++) {
+                    if (j < i + 2) {
+                        result[i] += calculator.multiplication(matrixA[i][j], vectorX[j]);
+                    }
+                }
             }
+            return result;
         }
-
-        return c;
+        throw new IllegalArgumentException("It needs to be a matrix n*n and a vector n");
     }
 
     /**
@@ -198,22 +194,18 @@ public class Ex3 implements Exercise3 {
      */
     @Override
     public double[][] exerciseBII(double[][] matrixA, double[][] matrixB, Calculator calculator) {
-        int aRow =matrixA.length;
-        int aColumn = matrixA[0].length;
-        int bRow = matrixB.length;
-        int bColumn = matrixB[0].length;
-
-        if((aRow != bRow) || (aColumn != bColumn)) throw new IllegalArgumentException("Both matrix should have the same size");
-
-        double[][] c = new double[aRow][aColumn];
-
-        for(int i = 0; i < aRow; i++){
-            for(int j = 0;j < i + 2 && j < aColumn; j++){
-                if(matrixA[i][j] == 0) break;
-                c[i][j] = calculator.sum(matrixA[i][j], matrixB[i][j]);
+        if(matrixA.length == matrixB.length) {
+            double[][] result = new double[matrixA.length][matrixB.length];
+            for (int i = 0; i < matrixA.length; i++) {
+                for (int j = 0; j < matrixA.length; j++) {
+                    if (j < i + 2) {
+                        result[i][j] = calculator.sum(matrixA[i][j], matrixB[i][j]);
+                    }
+                }
             }
+            return result;
         }
-        return c;
+        throw new IllegalArgumentException("It needs to be a matrix n*n and a vector n");
     }
 
     /**
@@ -225,24 +217,20 @@ public class Ex3 implements Exercise3 {
      */
     @Override
     public double[][] exerciseBIII(double[][] matrixA, double[][] matrixB, Calculator calculator) {
-        int aRow = matrixA.length;
-        int aColumn = matrixA[0].length;
-        int bRow = matrixB.length;
-        int bColumn = matrixB[0].length;
-
-        if(aColumn != bRow) throw new IllegalArgumentException("A:Rows: " + aRow + " don't match B:Columns " + aColumn + ".");
-
-        double[][] c = new double[aRow][bColumn];
-
-        for(int i = 0; i < aRow; i++){
-            for(int j = 0; j < bColumn; j++){
-                for(int k = 0;j < i + 2 && k < aColumn; k++){
-                    if(matrixA[i][j] == 0) break;
-                    c[i][j] += calculator.multiplication(matrixA[i][k],matrixB[k][j]);
+        if(matrixA[0].length == matrixB.length){
+            double[][] result = new double[matrixA.length][matrixB[0].length];
+            for (int i = 0; i < matrixA.length; i++) {
+                for (int j = 0; j < matrixB[0].length; j++) {
+                    for (int k = 0; k < matrixA[0].length; k++) {
+                        if(k < i + 2 && j < k + 2) {
+                            result[i][j] = calculator.sum(result[i][j], calculator.multiplication(matrixA[i][k], matrixB[k][j]));
+                        }
+                    }
                 }
             }
+            return result;
         }
-        return c;
+        throw new RuntimeException("Column length in Matrix A must be equal to quantity of rows in Matrix B");
     }
 
     /**
@@ -254,22 +242,18 @@ public class Ex3 implements Exercise3 {
      */
     @Override
     public double[] exerciseCI(double[][] matrixA, double[] vectorX, Calculator calculator) {
-        int aRow = matrixA.length;
-        int aColumn = matrixA[0].length;
-        int bRow = vectorX.length;
-
-        if(aColumn != bRow) throw new IllegalArgumentException("A:Rows: " + aRow + " don't match B:Columns " + aColumn + ".");
-
-        double[] c = new double[bRow];
-
-        for(int i = 0; i < aRow; i++){
-            for(int j = 0;j < i + 2 && j < aRow; j++){
-                if(Math.abs(i - j) <= 1)
-                    c[i] += calculator.multiplication(matrixA[i][j], vectorX[j]);
+        if(matrixA.length == vectorX.length) {
+            double[] result = new double[vectorX.length];
+            for (int i = 0; i < matrixA.length; i++) {
+                for (int j = 0; j < matrixA.length; j++) {
+                    if (j < i + 2 && j >= i - 1) {
+                        result[i] += calculator.multiplication(matrixA[i][j], vectorX[j]);
+                    }
+                }
             }
+            return result;
         }
-
-        return c;
+        throw new IllegalArgumentException("It needs to be a matrix n*n and a vector n");
     }
 
     /**
@@ -281,22 +265,18 @@ public class Ex3 implements Exercise3 {
      */
     @Override
     public double[][] exerciseCII(double[][] matrixA, double[][] matrixB, Calculator calculator) {
-        int aRow =matrixA.length;
-        int aColumn = matrixA[0].length;
-        int bRow = matrixB.length;
-        int bColumn = matrixB[0].length;
-
-        if((aRow != bRow) || (aColumn != bColumn)) throw new IllegalArgumentException("Both matrix should have the same size");
-
-        double[][] c = new double[aRow][aColumn];
-
-        for(int i = 0; i < aRow; i++){
-            for(int j = 0;j < i + 2 && j < aColumn; j++){
-                if(Math.abs(i - j) <= 1)
-                    c[i][j] = calculator.sum(matrixA[i][j], matrixB[i][j]);
+        if(matrixA.length == matrixB.length) {
+            double[][] result = new double[matrixA.length][matrixB.length];
+            for (int i = 0; i < matrixA.length; i++) {
+                for (int j = 0; j < matrixA.length; j++) {
+                    if (j < i + 2 && j >= i - 1) {
+                        result[i][j] = calculator.sum(matrixA[i][j], matrixB[i][j]);
+                    }
+                }
             }
+            return result;
         }
-        return c;
+        throw new IllegalArgumentException("It needs to be a matrix n*n and a vector n");
     }
 
     /**
@@ -337,24 +317,18 @@ public class Ex3 implements Exercise3 {
      */
     @Override
     public double[] exerciseDI(double[][] matrixA, int k1A, int k2A, double[] vectorX, Calculator calculator) {
-        int aRow = matrixA.length;
-        int aColumn = matrixA[0].length;
-        int bRow = vectorX.length;
-
-        if(aColumn != bRow) throw new IllegalArgumentException("A:Rows: " + aRow + " don't match B:Columns " + aColumn + ".");
-
-        if(k1A != k2A) throw new IllegalArgumentException();
-
-        double[] c = new double[bRow];
-
-        for(int i = 0; i < aRow; i++){
-            for(int j = 0;j < i + 2 && j < aRow; j++){
-                if(Math.abs(j - 1) <= k1A + 1)
-                    c[i] += calculator.multiplication(matrixA[i][j], vectorX[j]);
+        if(matrixA.length == vectorX.length) {
+            double[] result = new double[vectorX.length];
+            for (int i = 0; i < matrixA.length; i++) {
+                for (int j = 0; j < matrixA.length; j++) {
+                    if (j < i + 1 + k2A && j >= i - k1A) {
+                        result[i] += calculator.multiplication(matrixA[i][j], vectorX[j]);
+                    }
+                }
             }
+            return result;
         }
-
-        return c;
+        throw new IllegalArgumentException("It needs to be a matrix n*n and a vector n");
     }
 
     /**
@@ -370,24 +344,22 @@ public class Ex3 implements Exercise3 {
      */
     @Override
     public double[][] exerciseDII(double[][] matrixA, int k1A, int k2A, double[][] matrixB, int k1B, int k2B, Calculator calculator) {
-        int aRow =matrixA.length;
-        int aColumn = matrixA[0].length;
-        int bRow = matrixB.length;
-        int bColumn = matrixB[0].length;
-
-        if((aRow != bRow) || (aColumn != bColumn)) throw new IllegalArgumentException("Both matrix should have the same size");
-
-        if(k1A != k2A) throw new IllegalArgumentException();
-
-        double[][] c = new double[aRow][aColumn];
-
-        for(int i = 0; i < aRow; i++){
-            for(int j = 0;j < i + 2 && j < aColumn; j++){
-                if(Math.abs(j - 1) <= k1A + 1)
-                    c[i][j] = calculator.sum(matrixA[i][j], matrixB[i][j]);
+        if(matrixA.length == matrixB.length) {
+            double[][] result = new double[matrixA.length][matrixB.length];
+            for (int i = 0; i < matrixA.length; i++) {
+                for (int j = 0; j < matrixA.length; j++) {
+                    int max1 = k1B;
+                    int max2 = k2B;
+                    if(k1A > k1B) max1 = k1A;
+                    if(k2A > k2B) max2 = k1B;
+                    if (j < i + 1 + max2 && j >= i - max1) {
+                        result[i][j] = calculator.sum(matrixA[i][j], matrixB[i][j]);
+                    }
+                }
             }
+            return result;
         }
-        return c;
+        throw new IllegalArgumentException("It needs to be a matrix n*n and a vector n");
     }
 
     /**
